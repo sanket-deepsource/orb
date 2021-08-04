@@ -71,7 +71,7 @@ export class SinksService {
       params = params.append('name', filters.name);
     }
 
-    return this.http.get(environment.sinksUrl, {params})
+    return this.http.get(environment.sinksUrl + "?", {params})
       .map(
         resp => {
           return resp;

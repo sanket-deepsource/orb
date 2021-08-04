@@ -17,7 +17,7 @@ export const environment = {
   browseUrl: '/browse',
 
   // ORB
-  sinksUrl: '/sinks',
+  sinksUrl: '/api/v1/sinks',
 
   httpAdapterUrl: '/http',
   readerUrl: '/reader',
