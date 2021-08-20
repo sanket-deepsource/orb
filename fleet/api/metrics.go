@@ -18,16 +18,28 @@ type metricsMiddleware struct {
 	svc     fleet.Service
 }
 
+func (m metricsMiddleware) ViewAgentByID(ctx context.Context, token string, thingID string) (fleet.Agent, error) {
+	return m.svc.ViewAgentByID(ctx, token, thingID)
+}
+
+func (m metricsMiddleware) EditAgent(ctx context.Context, token string, agent fleet.Agent) (fleet.Agent, error) {
+	return m.svc.EditAgent(ctx, token, agent)
+}
+
 func (m metricsMiddleware) ViewAgentGroupByIDInternal(ctx context.Context, groupID string, ownerID string) (fleet.AgentGroup, error) {
 	return m.svc.ViewAgentGroupByIDInternal(ctx, groupID, ownerID)
 }
 
-func (m metricsMiddleware) ViewAgentGroupByID(ctx context.Context, groupID string, ownerID string) (fleet.AgentGroup, error) {
-	return m.svc.ViewAgentGroupByID(ctx, groupID, ownerID)
+func (m metricsMiddleware) ViewAgentGroupByID(ctx context.Context, token string, groupID string) (fleet.AgentGroup, error) {
+	return m.svc.ViewAgentGroupByID(ctx, token, groupID)
 }
 
 func (m metricsMiddleware) ListAgentGroups(ctx context.Context, token string, pm fleet.PageMetadata) (fleet.PageAgentGroup, error) {
 	return m.svc.ListAgentGroups(ctx, token, pm)
+}
+
+func (m metricsMiddleware) EditAgentGroup(ctx context.Context, token string, ag fleet.AgentGroup) (fleet.AgentGroup, error) {
+	return m.svc.EditAgentGroup(ctx, token, ag)
 }
 
 func (m metricsMiddleware) ListAgents(ctx context.Context, token string, pm fleet.PageMetadata) (fleet.Page, error) {
@@ -40,6 +52,14 @@ func (m metricsMiddleware) CreateAgent(ctx context.Context, token string, a flee
 
 func (m metricsMiddleware) CreateAgentGroup(ctx context.Context, token string, s fleet.AgentGroup) (fleet.AgentGroup, error) {
 	return m.svc.CreateAgentGroup(ctx, token, s)
+}
+
+func (m metricsMiddleware) RemoveAgentGroup(ctx context.Context, token string, groupID string) error {
+	return m.svc.RemoveAgentGroup(ctx, token, groupID)
+}
+
+func (m metricsMiddleware) ValidateAgentGroup(ctx context.Context, token string, s fleet.AgentGroup) (fleet.AgentGroup, error) {
+	return m.svc.ValidateAgentGroup(ctx, token, s)
 }
 
 // MetricsMiddleware instruments core service by tracking request count and latency.

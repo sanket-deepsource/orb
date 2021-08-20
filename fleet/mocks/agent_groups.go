@@ -30,6 +30,13 @@ func (a *agentGroupRepositoryMock) Save(ctx context.Context, group fleet.AgentGr
 	if err != nil {
 		return "", errors.Wrap(errors.ErrMalformedEntity, err)
 	}
+
+	for _, ag := range a.agentGroupMock {
+		if ag.Name == group.Name {
+			return "", errors.Wrap(errors.ErrConflict, err)
+		}
+	}
+
 	a.counter++
 	group.ID = ID.String()
 	a.agentGroupMock[ID.String()] = group
@@ -70,4 +77,24 @@ func (a *agentGroupRepositoryMock) RetrieveAllAgentGroupsByOwner(ctx context.Con
 		AgentGroups: agentGroups,
 	}
 	return pageAgentGroup, nil
+}
+
+func (a *agentGroupRepositoryMock) Update(ctx context.Context, ownerID string, group fleet.AgentGroup) (fleet.AgentGroup, error) {
+	if _, ok := a.agentGroupMock[group.ID]; ok {
+		if a.agentGroupMock[group.ID].MFOwnerID != ownerID {
+			return fleet.AgentGroup{}, fleet.ErrUpdateEntity
+		}
+		a.agentGroupMock[group.ID] = group
+		return a.agentGroupMock[group.ID], nil
+	}
+	return fleet.AgentGroup{}, fleet.ErrNotFound
+}
+
+func (a *agentGroupRepositoryMock) Delete(ctx context.Context, groupID string, ownerID string) error {
+	if _, ok := a.agentGroupMock[groupID]; ok {
+		if a.agentGroupMock[groupID].MFOwnerID != ownerID {
+			delete(a.agentGroupMock, groupID)
+		}
+	}
+	return nil
 }

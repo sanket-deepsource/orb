@@ -1,6 +1,11 @@
 <div class="container">
   <header>
-    <xng-breadcrumb></xng-breadcrumb>
+    <xng-breadcrumb class="orb-breadcrumb">
+      <ng-container
+          *xngBreadcrumbItem="let breadcrumb; let info = info; let first = first">
+        <ng-container [ngClass]="{'my_class': first === ''}">{{ breadcrumb }}</ng-container>
+      </ng-container>
+    </xng-breadcrumb>
     <h4>{{strings.sink[isEdit ? 'edit' : 'add']['header']}}</h4>
   </header>
   <div class="d-flex row">
@@ -48,7 +53,7 @@
                           (selectedChange)="onSinkTypeSelected($event)"
                           fullWidth="true"
                           formControlName="backend"
-                          appearance="outline"
+                          appearance="filled"
                           placeholder="Select backend type">
                 <nb-option *ngFor="let type of sinkTypesList"
                            [value]="type">{{ type }}</nb-option>
@@ -91,10 +96,10 @@
                    fieldSize="medium"
                    [formControlName]="control.prop" />
                <nb-select *ngSwitchCase="'select'"
+                          appearance="filled"
                           size="medium"
                           fullWidth="true"
                           formControlName="backend"
-                          appearance="outline"
                           placeholder="Select backend type">
                 <nb-option *ngFor="let type of control.options"
                            [value]="type">{{ type }}</nb-option>

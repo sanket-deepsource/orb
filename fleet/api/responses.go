@@ -84,12 +84,16 @@ func (s agentRes) Empty() bool {
 }
 
 type viewAgentRes struct {
-	ID           string                 `json:"id"`
-	ChannelID    string                 `json:"channel_id,omitempty"`
-	Owner        string                 `json:"-"`
-	Name         string                 `json:"name,omitempty"`
-	State        string                 `json:"state"`
-	Capabilities map[string]interface{} `json:"capabilities,omitempty"`
+	ID            string         `json:"id"`
+	Name          string         `json:"name"`
+	ChannelID     string         `json:"channel_id,omitempty"`
+	AgentTags     types.Tags     `json:"agent_tags"`
+	OrbTags       types.Tags     `json:"orb_tags"`
+	TsCreated     time.Time      `json:"ts_created"`
+	AgentMetadata types.Metadata `json:"agent_metadata"`
+	State         string         `json:"state"`
+	LastHBData    types.Metadata `json:"last_hb_data"`
+	LastHB        time.Time      `json:"ts_last_hb"`
 }
 
 func (res viewAgentRes) Code() int {
@@ -127,4 +131,38 @@ type pageRes struct {
 	Limit  uint64 `json:"limit"`
 	Order  string `json:"order"`
 	Dir    string `json:"direction"`
+}
+
+type removeRes struct{}
+
+func (r removeRes) Code() int {
+	return http.StatusNoContent
+}
+
+func (r removeRes) Headers() map[string]string {
+	return map[string]string{}
+}
+
+func (r removeRes) Empty() bool {
+	return true
+}
+
+type validateAgentGroupRes struct {
+	ID             string         `json:"id,omitempty"`
+	Name           string         `json:"name"`
+	Description    string         `json:"description,omitempty"`
+	Tags           types.Tags     `json:"tags"`
+	MatchingAgents types.Metadata `json:"matching_agents,omitempty"`
+}
+
+func (s validateAgentGroupRes) Code() int {
+	return http.StatusOK
+}
+
+func (s validateAgentGroupRes) Headers() map[string]string {
+	return map[string]string{}
+}
+
+func (s validateAgentGroupRes) Empty() bool {
+	return false
 }
