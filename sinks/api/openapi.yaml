@@ -339,7 +339,7 @@ components:
     SinkPageSchema:
       type: object
       properties:
-        sinks:
+        data:
           type: array
           minItems: 0
           uniqueItems: true

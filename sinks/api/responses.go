@@ -41,7 +41,7 @@ func (s sinkRes) Empty() bool {
 
 type sinksPagesRes struct {
 	pageRes
-	Sinks []sinkRes `json:"sinks"`
+	Sinks []sinkRes `json:"data"`
 }
 
 func (res sinksPagesRes) Code() int {

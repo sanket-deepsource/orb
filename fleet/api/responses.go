@@ -43,7 +43,7 @@ func (s agentGroupRes) Empty() bool {
 
 type agentGroupsPageRes struct {
 	pageRes
-	AgentGroups []agentGroupRes `json:"agentGroups"`
+	AgentGroups []agentGroupRes `json:"data"`
 }
 
 func (res agentGroupsPageRes) Code() int {
@@ -110,7 +110,7 @@ func (res viewAgentRes) Empty() bool {
 
 type agentsPageRes struct {
 	pageRes
-	Agents []viewAgentRes `json:"agents"`
+	Agents []viewAgentRes `json:"data"`
 }
 
 func (res agentsPageRes) Code() int {
