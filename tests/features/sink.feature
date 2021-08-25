@@ -15,11 +15,12 @@ Feature: Sink management
             And Enter password ("<sink_password>")
             And Click next button
             And Click save button
+        Then A new sink ("<result>") be created
 
 
         Examples:
-            | name_validation | desc_validation | tags_validation | type_validation | rh_validation | usrnm_validation|      email     | password | name_label |    description   | remote_host |   username  |  sink_password |
-            |      valid      |       valid     |     valid       |       valid     |     valid     |     valid       | test@email.com | 12345678 |  test_sink | test_create_sink |  localhost  | user_tester | 963852741 |
+            | result | name_validation | desc_validation | tags_validation | type_validation | rh_validation | usrnm_validation|      email     | password | name_label |    description   | remote_host |   username  |  sink_password |
+            | should |      valid      |       valid     |     valid       |       valid     |     valid     |     valid       | test@email.com | 12345678 |  test_sink | test_create_sink |  localhost  | user_tester | 963852741 |
         #     |      valid      |       valid     |     valid       |       valid     |     valid     |     valid       |
         #     |       any       |        any      |      any        |        any      |       any     |      any        |
         #     |       any       |       valid     |     valid       |       valid     |     valid     |     valid       |
@@ -30,15 +31,51 @@ Feature: Sink management
         #     |      valid      |       valid     |     valid       |       valid     |    invalid    |     valid       |
 
 
-    Scenario Outline: Delete sink
+    Scenario Outline: Close delete sink with name label
         Given User is logged in ORB site (email: "<email>", password: "<password>")
              And is on the sink management page
              And a sink already exist ("<name_label>")
         When Choose "delete sink" option
-            And Enter the name of the sink to be deleted ("<sink_name_label>")
+            # And Enter the name of the sink to be deleted ("<name_label>")
+            # And Press 'CLOSE' button
+
+        Examples:
+            |      email     | password | name_label |
+            | test@email.com | 12345678 | test_sink  |
+        
+    Scenario Outline: Close delete sink without name label
+        Given User is logged in ORB site (email: "<email>", password: "<password>")
+             And is on the sink management page
+             And a sink already exist ("<name_label>")
+        When Choose "delete sink" option
+            # And Enter the name of the sink to be deleted ("<name_label>")
+            # And Press 'CLOSE' button
+
+        Examples:
+            |      email     | password | name_label |
+            | test@email.com | 12345678 | test_sink  |
+
+
+    Scenario Outline: Visualize an existing sink
+        Given User is logged in ORB site (email: "<email>", password: "<password>")
+            And is on the sink management page
+            And a sink already exist ("<name_label>")
+        When Press visualize sink button
+        Then Sink details page should be displayed
+
+        Examples:
+            |      email     | password | name_label |
+            | test@email.com | 12345678 | test_sink  |
+
+    Scenario Outline: Delete sink
+        Given User is logged in ORB site (email: "<email>", password: "<password>")
+            And is on the sink management page
+            And a sink already exist ("<name_label>")
+        When Choose "delete sink" option
+            And Enter the name of the sink to be deleted ("<name_label>")
             And Press delete button
         Then Referred sink ("<name_label>") should be deleted
 
         Examples:
-            | name_label |      email     | password | sink_name_label |
-            |  test_sink | test@email.com | 12345678 |     Value 1     |
+            |      email     | password | name_label |
+            | test@email.com | 12345678 | test_sink  |

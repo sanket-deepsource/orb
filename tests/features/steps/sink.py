@@ -3,7 +3,8 @@ import functions
 from time import sleep
 
 login_page = "http://localhost:80/auth/login"
-sink_creation_page = 'http://localhost/pages/sinks'
+all_sinks_page = 'http://localhost/pages/sinks'
+sink_add_page = 'http://localhost/pages/sinks/add'
 
 @given('User is logged in ORB site (email: "{email}", password: "{password}")')
 def check_sm_page(context, email, password):
@@ -51,21 +52,29 @@ def username(context, username):
 def password(context, sink_password):
     functions.enter_information("nb-form-field.ng-star-inserted:nth-child(3) > div:nth-child(1) > div:nth-child(2) > input:nth-child(1)", sink_password, context, 1)    
 
-
 @when('Click save button')
 def click_save(context):
-    functions.press_button(".next-button", context)    
+    functions.press_button(".next-button", context)
+    context.popup_messsage = functions.get_toastr_message("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div[2]/div/div/nb-toastr-container/nb-toast", context)
 
-@then('A new sink should be created')
-def check_sink(context):
-    pass
+@then('A new sink ("{result}") be created')
+def check_sink(context, result):
+    if result == 'should':
+        assert ("Sink sucessfully created" in context.popup_messsage)
+        functions.check(all_sinks_page, context)
+    elif result == "shouldn't":
+        assert ("Failed to create Sink" in context.popup_messsage)
+        functions.check(sink_add_page, context)
+    else:
 
-#----------------------------
+        raise("Invalid result")  
+
+#------------delete_sink----------------
 
 
 @given('a sink already exist ("{name_label}")')
 def existing_sink(context, name_label):
-    pass
+    assert len(functions.get_sinks_name(context)) > 0
 
 
 @when('Choose "delete sink" option')
@@ -81,17 +90,37 @@ def choose_delete_sink(context):
 
     # functions.press_button(".button-new-sink", context)
     functions.move_mouse('.orb-action-hover-container', context)
-    
-    sleep(4)
+    functions.press_button(".del-button", context)
 
 @when('Enter the name of the sink to be deleted ("{name_label}")')
 def name_label_to_be_deleted(context, name_label):
-    pass
+    functions.enter_information("input.size-medium", name_label, context, 1)
 
 @when("Press delete button")
 def delete_button(context):
-    pass
+    functions.press_button(".appearance-filled", context)
 
 @then('Referred sink ("{name_label}") should be deleted')
 def check_sink_deleted(context, name_label):
     pass
+
+
+#--------cancel_delete_sink-----------
+
+@when("Press 'CLOSE' button")
+def cancel_delete_sink(context):
+   functions.press_button(".orb-close-dialog", context) 
+
+
+#--------detail------------------
+@when('Press visualize sink button')
+def visualize_sink(context):
+    functions.move_mouse('.orb-action-hover-container', context)
+    #functions.press_button(".detail-button", context)
+    sleep(5)
+
+
+@then('Sink details page should be displayed')
+def details_page(context):
+    functions.find_elements_by_class("cdk-overlay-backdrop-showing",context)
+    sleep(2)

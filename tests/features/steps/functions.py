@@ -120,3 +120,25 @@ def move_mouse(css_selector, context):
     contract =  context.driver.find_element_by_css_selector(str(css_selector))
     action.move_to_element(contract).perform() # move the mouse to the element
     contract.click()
+
+
+def get_toastr_message(path, context):
+    return WebDriverWait(context.driver,10).until(EC.presence_of_element_located((By.XPATH,str(path)))).text
+
+def find_elements_by_class(element_class, context):
+    return context.driver.find_elements_by_class_name(str(element_class))
+
+
+def get_sinks_name(context):
+    sink_list = list()
+    child = 1
+    sink_css_selector = str(f'tr.ng-star-inserted:nth-child({child}) > td:nth-child(1)')
+    while len(context.driver.find_element_by_css_selector(str(sink_css_selector)).text) > 0:
+        sink_list.append(context.driver.find_element_by_css_selector(str(sink_css_selector)).text)
+        child = child + 1
+        sink_css_selector = str(f'tr.ng-star-inserted:nth-child({child}) > td:nth-child(1)')
+        try:
+            print(context.driver.find_element_by_css_selector(str(sink_css_selector)).text)
+        except:
+            break    
+    return sink_list
