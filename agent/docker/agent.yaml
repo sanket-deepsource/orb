@@ -1,8 +1,13 @@
 version: "1.0"
 
 visor:
+  # each tap has input module specific configuration options
   taps:
-
+    # a pcap tap which uses eth0 and is referenced by the identifier "anycast"
+    anycast:
+      input_type: pcap
+      config:
+        iface: wlp0s20f3
 orb:
   backends:
     pktvisor:

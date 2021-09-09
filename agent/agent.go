@@ -25,11 +25,12 @@ type Agent interface {
 const HeartbeatFreq = 60 * time.Second
 
 type orbAgent struct {
-	logger   *zap.Logger
-	config   config.Config
-	client   mqtt.Client
-	db       *sqlx.DB
-	backends map[string]backend.Backend
+	logger      *zap.Logger
+	config      config.Config
+	visorConfig config.VisorConfig
+	client      mqtt.Client
+	db          *sqlx.DB
+	backends    map[string]backend.Backend
 
 	hbTicker *time.Ticker
 	hbDone   chan bool
@@ -49,7 +50,7 @@ type orbAgent struct {
 
 var _ Agent = (*orbAgent)(nil)
 
-func New(logger *zap.Logger, c config.Config) (Agent, error) {
+func New(logger *zap.Logger, c config.Config, vc config.VisorConfig) (Agent, error) {
 	logger.Info("using local config db", zap.String("filename", c.OrbAgent.DB.File))
 	db, err := sqlx.Connect("sqlite3", c.OrbAgent.DB.File)
 	if err != nil {
@@ -60,7 +61,7 @@ func New(logger *zap.Logger, c config.Config) (Agent, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &orbAgent{logger: logger, config: c, policyManager: pm, db: db}, nil
+	return &orbAgent{logger: logger, config: c, visorConfig: vc, policyManager: pm, db: db}, nil
 }
 
 func (a *orbAgent) startBackends() error {

@@ -16,6 +16,7 @@ func (a *orbAgent) sendCapabilities() error {
 	capabilities := fleet.Capabilities{
 		SchemaVersion: fleet.CurrentCapabilitiesSchemaVersion,
 		AgentTags:     a.config.OrbAgent.Tags,
+		Taps:          a.visorConfig.Visor.Taps,
 		OrbAgent: fleet.OrbAgentInfo{
 			Version: orb.GetVersion(),
 		},

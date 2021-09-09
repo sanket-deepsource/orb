@@ -48,3 +48,11 @@ type Config struct {
 	Version  float64  `mapstructure:"version"`
 	OrbAgent OrbAgent `mapstructure:"orb"`
 }
+
+type VisorTaps struct {
+	Taps map[string]map[string]interface{} `mapstructure:"taps"`
+}
+
+type VisorConfig struct {
+	Visor VisorTaps `mapstructure:"visor"`
+}

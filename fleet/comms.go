@@ -302,6 +302,7 @@ func (svc fleetCommsService) handleCapabilities(thingID string, channelID string
 	agent.AgentMetadata = make(map[string]interface{})
 	agent.AgentMetadata["backends"] = capabilities.Backends
 	agent.AgentMetadata["orb_agent"] = capabilities.OrbAgent
+	agent.AgentMetadata["taps"] = capabilities.Taps
 	agent.AgentTags = capabilities.AgentTags
 	err := svc.agentRepo.UpdateDataByIDWithChannel(context.Background(), agent)
 	if err != nil {

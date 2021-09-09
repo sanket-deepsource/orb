@@ -56,8 +56,15 @@ func Run(cmd *cobra.Command, args []string) {
 
 	config.Debug = Debug
 
+	var visorConfig config2.VisorConfig
+	err = viper.Unmarshal(&visorConfig)
+	if err != nil {
+		logger.Error("agent start up error (visor config)", zap.Error(err))
+		os.Exit(1)
+	}
+
 	// new agent
-	a, err := agent.New(logger, config)
+	a, err := agent.New(logger, config, visorConfig)
 	if err != nil {
 		logger.Error("agent start up error", zap.Error(err))
 		os.Exit(1)
@@ -117,6 +124,7 @@ func mergeOrError(path string) {
 	v.SetDefault("orb.cloud.mqtt.channel_id", "")
 	v.SetDefault("orb.db.file", "./orb-agent.db")
 	v.SetDefault("orb.tls.verify", true)
+	v.SetDefault("visor.taps", "")
 
 	cobra.CheckErr(v.ReadInConfig())
 

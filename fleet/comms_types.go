@@ -38,10 +38,11 @@ type BackendInfo struct {
 const CurrentCapabilitiesSchemaVersion = "1.0"
 
 type Capabilities struct {
-	SchemaVersion string                 `json:"schema_version"`
-	OrbAgent      OrbAgentInfo           `json:"orb_agent"`
-	AgentTags     map[string]string      `json:"agent_tags"`
-	Backends      map[string]BackendInfo `json:"backends"`
+	SchemaVersion string                            `json:"schema_version"`
+	OrbAgent      OrbAgentInfo                      `json:"orb_agent"`
+	AgentTags     map[string]string                 `json:"agent_tags"`
+	Backends      map[string]BackendInfo            `json:"backends"`
+	Taps          map[string]map[string]interface{} `json:"taps"`
 }
 
 const CurrentHeartbeatSchemaVersion = "1.0"
