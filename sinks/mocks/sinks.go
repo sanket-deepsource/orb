@@ -10,13 +10,13 @@ package mocks
 
 import (
 	"context"
-	"fmt"
+	"strings"
+	"sync"
+
 	"github.com/gofrs/uuid"
 	"github.com/mainflux/mainflux/things"
 	"github.com/ns1labs/orb/pkg/errors"
 	"github.com/ns1labs/orb/sinks"
-	"strings"
-	"sync"
 )
 
 var _ sinks.SinkRepository = (*sinkRepositoryMock)(nil)
@@ -89,7 +89,7 @@ func (s *sinkRepositoryMock) RetrieveAll(ctx context.Context, owner string, pm s
 
 	var sks []sinks.Sink
 
-	prefix := fmt.Sprintf("%s", owner)
+	prefix := owner
 	id := uint64(0)
 	for _, v := range s.sinksMock {
 		id++

@@ -12,6 +12,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
+	"net/http/httptest"
+	"strings"
+	"testing"
+
 	"github.com/gofrs/uuid"
 	"github.com/mainflux/mainflux"
 	flmocks "github.com/ns1labs/orb/fleet/mocks"
@@ -23,11 +29,6 @@ import (
 	"github.com/opentracing/opentracing-go/mocktracer"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"io"
-	"net/http"
-	"net/http/httptest"
-	"strings"
-	"testing"
 )
 
 const (
@@ -275,7 +276,7 @@ func TestListPolicies(t *testing.T) {
 		"get a list of policies with default URL": {
 			auth:   token,
 			status: http.StatusOK,
-			url:    fmt.Sprintf("%s", ""),
+			url:    "",
 			res:    data[0:limit],
 			total:  limit,
 		},
@@ -1142,7 +1143,7 @@ func TestListDataset(t *testing.T) {
 		"get a list of datasets with default URL": {
 			auth:   token,
 			status: http.StatusOK,
-			url:    fmt.Sprintf("%s", ""),
+			url:    "",
 			res:    data[0:limit],
 			total:  limit,
 		},

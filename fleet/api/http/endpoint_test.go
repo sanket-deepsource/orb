@@ -12,6 +12,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
+	"net/http/httptest"
+	"strconv"
+	"strings"
+	"testing"
+	"time"
+
 	"github.com/mainflux/mainflux"
 	mfsdk "github.com/mainflux/mainflux/pkg/sdk/go"
 	"github.com/mainflux/mainflux/things"
@@ -25,13 +33,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
-	"io"
-	"net/http"
-	"net/http/httptest"
-	"strconv"
-	"strings"
-	"testing"
-	"time"
 )
 
 const (
@@ -374,7 +375,7 @@ func TestListAgentGroup(t *testing.T) {
 		"get a list of agent group with default URL": {
 			auth:   token,
 			status: http.StatusOK,
-			url:    fmt.Sprintf("%s", ""),
+			url:    "",
 			res:    data[0:limit],
 			total:  limit,
 		},
@@ -856,7 +857,7 @@ func TestListAgent(t *testing.T) {
 		"get a list of agents with default URL": {
 			auth:   token,
 			status: http.StatusOK,
-			url:    fmt.Sprintf("%s", ""),
+			url:    "",
 			res:    data[0:limit],
 			total:  limit,
 		},
